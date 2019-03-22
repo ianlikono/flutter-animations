@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:rxdart/rxdart.dart';
-
 import '../models/item_model.dart';
-import '../resources/respository.dart';
+import '../resources/repository.dart';
 
 class StoriesBloc {
   final _repository = Repository();
@@ -27,10 +25,13 @@ class StoriesBloc {
     _topIds.sink.add(ids);
   }
 
+  clearCache() {
+    return _repository.clearCache();
+  }
+
   _itemsTransformer() {
     return ScanStreamTransformer(
       (Map<int, Future<ItemModel>> cache, int id, index) {
-        print(index);
         cache[id] = _repository.fetchItem(id);
         return cache;
       },
